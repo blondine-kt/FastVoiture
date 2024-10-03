@@ -1,17 +1,21 @@
+import { Link, Stack } from 'expo-router';
 import {StyleSheet, Text, View,Animated,ScrollView,TouchableOpacity } from "react-native";
 import React,{ useRef } from "react";
+import { useRouter } from 'expo-router';
 
 
 export default function HomeScreen() {
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  const scrollToIndex = (index) => {
-    Animated.timing(scrollX, {
-      toValue: index * 200, // Adjust based on item width + margin
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
+  const router = useRouter();
+
+  // const scrollToIndex = (index) => {
+  //   Animated.timing(scrollX, {
+  //     toValue: index * 200, 
+  //     duration: 300,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
   return (
     <View style={styles.container}>
        <Animated.ScrollView
@@ -41,12 +45,14 @@ export default function HomeScreen() {
     </Animated.ScrollView>
 
     <View style={styles.buttonContainer}>
-      
+         
           <TouchableOpacity
             style={styles.button}
+            onPress={() => router.push('signin')}
           >
             <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
+          
         
       </View>
     </View>
