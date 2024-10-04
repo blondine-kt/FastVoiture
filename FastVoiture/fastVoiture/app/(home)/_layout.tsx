@@ -14,7 +14,7 @@ export default function HomeLayout() {
         },
       }}>
        <Stack.Screen name="index" options={{title:"Home"}} />
-       <Stack.Screen name="signin" options={{title:"Inscrire"}}/>
+       <Stack.Screen name="signin" options={{title:"Connexion"}}/>
     </Stack>
   );
 }
