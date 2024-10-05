@@ -1,12 +1,16 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "jsx": "react",
     "strict": true,
     "paths": {
       "@/*": [
         "./*"
-      ]
-    }
+      ],
+     
+    },
+    "skipLibCheck": true,  // Optional: Skip type checking of declaration files
+    "esModuleInterop": true 
   },
   "include": [
     "**/*.ts",

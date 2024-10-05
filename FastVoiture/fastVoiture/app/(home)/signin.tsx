@@ -1,128 +1,179 @@
-import React, { useState } from "react";
-import { useRouter } from 'expo-router';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCamera } from '@fortawesome/free-solid-svg-icons/faCamera'
-import { faMicrophone} from '@fortawesome/free-solid-svg-icons/faMicrophone'
+import React from 'react';
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Button, TextInput, Text } from 'react-native-paper';
+import { useForm, Controller } from 'react-hook-form';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
+import { router, useRouter } from "expo-router";
 
-import{View, StyleSheet, Text,ScrollView, TextInput, Button, TouchableOpacity} from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons/faCamera";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons/faMicrophone";
 
+interface FormValues {
+  username: string;
+  password: string;
+}
 
-export default function Sign_in (){
-    const router = useRouter();
-   
-    
-   return(
-    
-        <View style={styles.container}>
-          <View style={styles.card}>
-           
-            <TextInput
-            placeholder="Nom d'utilisateur"
+const validationSchema = Yup.object().shape({
+  username: Yup.string().required('Le username est requis'),
+  password: Yup.string().min(6,'Le mot de passe doit contenir au moins 6 caractere').required('Le mot de passe est requis'),
+});
+
+const MyForm = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit = (data: FormValues) => {
+    try{
+    console.log(data);
+    Alert.alert(
+      "Form Submitted",
+      `UserName: ${data.username}\nPassword: ${data.password}`
+    );
+  } catch (error) {
+    console.log(error);
+  }
+  };
+
+  return (
+    <View style={styles.container}>
+       <View style={styles.card}>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            label="Nom d'utilisateur"
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value}
             style={styles.inputs}
-            ></TextInput>
-            
-            <TextInput
-            placeholder="Mot de passe"
+            error={!!errors.username}
+          />
+        )}
+        name="username"
+        rules={{ required: true }}
+      />
+      {errors.username && <Text style={styles.error}>{errors.username.message}</Text>}
+
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            label="Mot de passe"
             secureTextEntry
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value}
             style={styles.inputs}
-            >
-            </TextInput>
+            error={!!errors.password}
+          />
+        )}
+        name="password"
+        rules={{ required: true }}
+      />
+      {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
-            <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
-           <Text style={styles.text}>Se connecter</Text>        
-              </TouchableOpacity>
-           </View>
-           <View style={styles.icon_wrapper}>
-           <TouchableOpacity 
-           style={styles.camera_icon}
-           onPress={() => router.push('camera_acess')}>
-           <FontAwesomeIcon icon={faCamera} />
-           </TouchableOpacity>
-           <TouchableOpacity style={styles.camera_icon}>
-           <FontAwesomeIcon icon={faMicrophone} />
-           </TouchableOpacity>
-           </View>
-          </View>
+      <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text} onPress={handleSubmit(onSubmit)}>
+              Se connecter
+            </Text>
+          </TouchableOpacity>
+          
         </View>
-      
-   )} 
- 
-
-
-
+        <View style={styles.icon_wrapper}>
+          <TouchableOpacity
+            style={styles.camera_icon}
+            onPress={() => router.push("/camera_acess")}
+          >
+            <FontAwesomeIcon icon={faCamera} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.camera_icon}>
+            <FontAwesomeIcon icon={faMicrophone} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        alignItems:"center",
-        justifyContent:"center",     
-    },
-    card:{
-        height:'53%',
-        width:'75%',
-        backgroundColor:"#fff",
-        borderRadius:10,
-        borderStyle:"solid",
-        borderColor:"blue",
-        borderWidth:1,
-        flexDirection:"column",
-        elevation:50,
-
-    },
-    inputs:{
-        height: 40,
-        borderColor: '#2a9ec6',
-        borderWidth: 1,
-        marginBottom: 12,
-        paddingHorizontal: 8,
-        borderRadius:30,
-        marginTop:15,
-        marginHorizontal:10,
-
-    },
-    icon_wrapper:{
-        flex:1,
-        flexDirection:'row',
-        alignContent:'space-between',
-        alignItems:'center',
-        justifyContent:'space-between'
-
-        
-    },
-    camera_icon: {
-       height:50,
-       width:50,
-       backgroundColor:"#5faaaa",
-       borderStyle:"solid",
-       borderColor:"#5faaaa",
-       borderRadius:35,
-       marginHorizontal:25,
-       borderCurve:'circular',
-       alignItems:'center',
-       justifyContent:'center',
-       borderWidth: 1,
-    
-      },
-
-    buttonContainer: {
-        backgroundColor: '#5faaaa',
-        margin: 64,
-        borderStyle:"solid",
-        borderRadius:10,
-        alignItems:'center',
-        padding:10,
-        opacity:0.4,
-      },
-      button: {
-        alignSelf: 'flex-end',
-        alignItems: 'center',
-      },
-      text: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'blue',
-      },
-    
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  card: {
+    height: "65%",
+    width: "75%",
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    borderStyle: "solid",
+    borderColor: "blue",
+    borderWidth: 1,
+    flexDirection: "column",
+    elevation: 40,
+  },
+  inputs: {
+    height: 45,
+    borderColor: "#2a9ec6",
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    marginTop: 20,
+    marginHorizontal: 10,
+  },
+  icon_wrapper: {
+    flex: 1,
+    flexDirection: "row",
+    alignContent: "space-between",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  camera_icon: {
+    height: 50,
+    width: 50,
+    backgroundColor: "#5faaaa",
+    borderStyle: "solid",
+    borderColor: "#5faaaa",
+    borderRadius: 35,
+    marginHorizontal: 25,
+    borderCurve: "circular",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+  },
+  buttonContainer: {
+    backgroundColor: "#5faaaa",
+    margin: 64,
+    borderStyle: "solid",
+    borderRadius: 10,
+    alignItems: "center",
+    padding: 10,
+    opacity: 0.4,
+  },
+  button: {
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "blue",
+  },
+  error: {
+    fontSize: 12,
+    color: "red",
+    marginBottom: 12,
+  },
 })
+
+export default MyForm;
