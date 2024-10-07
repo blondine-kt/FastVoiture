@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { router, useRouter } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons/faCamera";
@@ -86,7 +86,12 @@ const MyForm = () => {
               Se connecter
             </Text>
           </TouchableOpacity>
-          
+
+        </View>
+        <View>
+        <TouchableOpacity
+          onPress={() => router.push('/inscription')}>
+            <Text style={styles.link} >Creer un compte</Text></TouchableOpacity>
         </View>
         <View style={styles.icon_wrapper}>
           <TouchableOpacity
@@ -150,6 +155,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
+  },
+  link:{
+   padding:0,
+   fontSize:24,
+   fontFamily:'times',
+   textDecorationLine:'underline',
+   color:"blue",
+   textAlign:'center',
   },
   buttonContainer: {
     backgroundColor: "#5faaaa",
