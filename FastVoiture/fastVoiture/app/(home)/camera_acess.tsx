@@ -50,7 +50,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} >
+      <CameraView style={styles.camera} facing={facing} ref={camRef} >
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={takePicture}>
           <FontAwesomeIcon icon={faCamera} />
@@ -58,6 +58,7 @@ export default function App() {
            </View>
           <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text>+</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -78,20 +79,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
+    height: 50,
+    width: 50,
+    flexDirection:'column-reverse',
     backgroundColor: 'white',
     margin: 50,
     borderCurve:'circular',
     borderColor:'gray',
     borderStyle:'solid',
-    borderWidth:2,
-    borderRadius: 10,
+    borderWidth:3,
+    borderRadius: 35,
+    alignItems:'center',
+    alignContent:'center',
+    justifyContent:'center',
   },
   button: {
-    flex: 1,
-    alignSelf: 'flex-end',
     alignItems: 'center',
+    alignContent:'center',
   },
   text: {
     fontSize: 24,
