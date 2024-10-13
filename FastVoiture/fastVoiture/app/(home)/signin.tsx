@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
   link:{
    padding:0,
    fontSize:24,
-   fontFamily:'times',
    textDecorationLine:'underline',
    color:"blue",
    textAlign:'center',

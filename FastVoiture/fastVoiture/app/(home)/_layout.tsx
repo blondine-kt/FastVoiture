@@ -16,6 +16,7 @@ export default function HomeLayout() {
        <Stack.Screen name="index" options={{title:"Home"}} />
        <Stack.Screen name="signin" options={{title:"Connexion"}}/>
        <Stack.Screen name="inscription" options={{title:"Inscription"}}/>
+       <Stack.Screen name='(tabs)' options={{ headerShown: false }}/>
     </Stack>
   );
 }

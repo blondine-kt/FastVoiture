@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, TextInput, Text, StyleSheet, Alert } from "react-native";
+import { View, Button, TextInput, Text, StyleSheet, Alert,ScrollView } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -30,6 +30,7 @@ const MyForm = () => {
   };
 
   return (
+    <ScrollView>
     <Formik
       initialValues={{
         username: "",
@@ -146,6 +147,7 @@ const MyForm = () => {
         </View>
       )}
     </Formik>
+    </ScrollView>
   );
 };
 
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 15,
   },
   error: {
     color: "red",
