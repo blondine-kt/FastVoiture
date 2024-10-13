@@ -48,3 +48,48 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+Fast Voiture est une application de commande de taxi, Ce module conducteur est specialement pour faciliter les transactions avec les passagers
+
+Taches:
+- Création d'une interface utilisateur web et mobile
+ . Creation des screens avec React-Native
+  > Page d'acceuil
+     Terminée  
+     Difficulté:
+     ----------
+       .Interface qui s'adapte à android, ios et web
+       .Choix des couleurs neutre et non aggrésif
+      Solution:
+      ---------
+       .Adapter le code
+       .Verification de couleurs neutre dans le site https://www.rgbtohex.net/rgb/95-170-170 
+   » Page d'inscription
+     Terminée
+     Difficulté:
+     -----------
+      . Ajout d'une image pour la reconnaissance faciale
+      . L'utilisation de la validation yup avec typeScript
+     Solution:
+     ---------
+      .L'image et la voix seront ajouter dans le profil de l'utilisateur 
+       pour ajouter plus de sécurité à son compte
+      .L'utilisation d'un fichier js pour faciliter l'utilisation de yup
+   » Page de Connexion:
+      En Cours
+      Difficulté:
+      -----------
+       . Connexion avec la base de données et le serveur
+       . Ajout de la recconnaissance faciale et vocale  
+
+   » Page de Profil de l'utilisateur
+      En Cours
+      Difficulté:
+      -----------
+       . Outils de modification du profil
+       . Ajout des routes pour l'adaptetion avec le module passager
+       . Outils pour supprimer son compte
+       . Outils de géolocalisation 
+
