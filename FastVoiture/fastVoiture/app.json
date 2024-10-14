@@ -18,7 +18,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/fv_icon.png",
-        "backgroundColor": "black"
+        "backgroundColor": "#46c2c2"
       }
     },
     "web": {

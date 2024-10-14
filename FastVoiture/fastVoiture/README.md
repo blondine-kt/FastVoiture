@@ -93,3 +93,13 @@ Taches:
        . Outils pour supprimer son compte
        . Outils de géolocalisation 
 
+# Ameliorations:
+- La documentation choisi pour cette interface expo dois etre d'au moins 6 mois du a la depreciation rapides des librairies de react-native.
+
+# Ressource:
+- https://docs.expo.dev/
+- https://www.youtube.com/watch?v=KGzfBDtgjQo
+- https://github.com/digitalinnovationone/trilha-react-native-expo-camera--capture-photo/blob/main/App.tsx
+- https://medium.com/@svbala99/set-up-splash-screen-in-react-native-for-ios-and-android-2023-dbedb87fe75e
+- https://github.com/react-navigation/react-navigation/blob/main/packages/react-native-drawer-layout/src/views/Drawer.native.tsx
+

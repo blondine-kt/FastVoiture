@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCamera } from '@fortawesome/free-solid-svg-icons/faCamera'
+import { faRotateLeft} from '@fortawesome/free-solid-svg-icons/faRotateLeft'
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -58,7 +59,7 @@ export default function App() {
            </View>
           <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text>+</Text>
+          <FontAwesomeIcon icon={faRotateLeft} />
           </TouchableOpacity>
         </View>
       </CameraView>
