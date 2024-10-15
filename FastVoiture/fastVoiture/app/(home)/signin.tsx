@@ -1,9 +1,9 @@
-import React from 'react';
-import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Button, TextInput, Text } from 'react-native-paper';
-import { useForm, Controller } from 'react-hook-form';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import React from "react";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Button, TextInput, Text } from "react-native-paper";
+import { useForm, Controller } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Link, router, useRouter } from "expo-router";
 
@@ -11,14 +11,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons/faCamera";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons/faMicrophone";
 
+// import user context
+import { useUser } from "../userauth";
+
 interface FormValues {
   username: string;
   password: string;
 }
 
+const user = {
+  username: "Blondine",
+  password: "pass123",
+};
+const { setUser } = useUser();
+
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required('Le username est requis'),
-  password: Yup.string().min(6,'Le mot de passe doit contenir au moins 6 caractere').required('Le mot de passe est requis'),
+  username: Yup.string().required("Le username est requis"),
+  password: Yup.string()
+    .min(6, "Le mot de passe doit contenir au moins 6 caractere")
+    .required("Le mot de passe est requis"),
 });
 
 const MyForm = () => {
@@ -31,67 +42,80 @@ const MyForm = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    try{
-    console.log(data);
-    Alert.alert(
-      "Form Submitted",
-      `UserName: ${data.username}\nPassword: ${data.password}`
-    );
-  } catch (error) {
-    console.log(error);
-  }
+    try {
+      if (data.username == user.username) {
+        if (data.password == user.password) {
+          const name = data.username;
+          const password = data.password;
+          setUser({ name, password });
+          router.push("/(home)/(tabs)");
+        }
+      } else {
+        Alert.alert("Error", "Wrong password or username");
+      }
+      // console.log(data);
+      // Alert.alert(
+      //   "Form Submitted",
+      //   `UserName: ${data.username}\nPassword: ${data.password}`
+      // );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <View style={styles.container}>
-       <View style={styles.card}>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Nom d'utilisateur"
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            style={styles.inputs}
-            error={!!errors.username}
-          />
+      <View style={styles.card}>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              label="Nom d'utilisateur"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              style={styles.inputs}
+              error={!!errors.username}
+            />
+          )}
+          name="username"
+          rules={{ required: true }}
+        />
+        {errors.username && (
+          <Text style={styles.error}>{errors.username.message}</Text>
         )}
-        name="username"
-        rules={{ required: true }}
-      />
-      {errors.username && <Text style={styles.error}>{errors.username.message}</Text>}
 
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Mot de passe"
-            secureTextEntry
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            style={styles.inputs}
-            error={!!errors.password}
-          />
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              label="Mot de passe"
+              secureTextEntry
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              style={styles.inputs}
+              error={!!errors.password}
+            />
+          )}
+          name="password"
+          rules={{ required: true }}
+        />
+        {errors.password && (
+          <Text style={styles.error}>{errors.password.message}</Text>
         )}
-        name="password"
-        rules={{ required: true }}
-      />
-      {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
-      <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.text} onPress={handleSubmit(onSubmit)}>
               Se connecter
             </Text>
           </TouchableOpacity>
-
         </View>
         <View>
-        <TouchableOpacity
-          onPress={() => router.push('/inscription')}>
-            <Text style={styles.link} >Creer un compte</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push("/inscription")}>
+            <Text style={styles.link}>Creer un compte</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.icon_wrapper}>
           <TouchableOpacity
@@ -156,12 +180,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
   },
-  link:{
-   padding:0,
-   fontSize:24,
-   textDecorationLine:'underline',
-   color:"blue",
-   textAlign:'center',
+  link: {
+    padding: 0,
+    fontSize: 24,
+    textDecorationLine: "underline",
+    color: "blue",
+    textAlign: "center",
   },
   buttonContainer: {
     backgroundColor: "#5faaaa",
@@ -186,6 +210,6 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: 12,
   },
-})
+});
 
 export default MyForm;
