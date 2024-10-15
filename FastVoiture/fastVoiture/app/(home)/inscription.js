@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const MyForm = () => {
-  const [image, setImage] = useState<string | null>(null);
+  
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Nom d'utilisateur est requis"),
     name: Yup.string().required("Nom requis"),

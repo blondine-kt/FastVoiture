@@ -74,24 +74,25 @@ const styles = StyleSheet.create({
   },
   body:{
    
-    height: '60%',
-    width: 350,
+    height: '65%',
+    width: 360,
     borderStyle:"solid" ,
     borderColor:"#2a9ec6",
     borderWidth:2,
-    paddingTop:20,
+    paddingTop:15,
     paddingHorizontal:5,
     paddingBottom:10,
     marginRight:15,
     marginLeft:15,
-    marginTop:50,
+    marginTop:40,
     backgroundColor:'#FFF',
     borderRadius:10,
     alignItems:'center',
+    justifyContent:'center',
     fontFamily:'sans-serif-condensed',
   },
   image_container:{
-   marginTop:20,
+   marginTop:10,
    padding:10,
    marginBottom:10,
    width:250,
@@ -99,15 +100,12 @@ const styles = StyleSheet.create({
   
   },
   header:{
-    fontSize:24,
+    fontSize:20,
     fontWeight:"bold",
     paddingTop:10,
     paddingHorizontal:5,
     marginRight:15,
     marginTop:10,
-    marginBottom:5,
-    
-
   },
   scrollView: {
     width: '100%',
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     marginTop:0,
-    width: '60%', 
+    
     padding: 10,
     fontSize:18 
   },
