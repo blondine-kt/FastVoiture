@@ -3,7 +3,6 @@ import pygame
 pygame.init()
 pygame.mixer.init()
 import os
-from BiT import bio_taxo
 import cv2
 import numpy as np
 import dlib
@@ -79,9 +78,6 @@ def img_test(root_folder):
     np.save('test.npy', signatures)
     print('Successfully stored!')
 
-def bitdesc(image_path):
-    data = cv2.imread(image_path, 0)
-    return bio_taxo(data) 
 
 def saved(names,url):
     while cam.isOpened:
