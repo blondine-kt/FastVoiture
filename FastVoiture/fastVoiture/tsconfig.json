@@ -17,5 +17,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/(home)/inscription.js"  ]
+, "app/(home)/inscription.js", "app/(home)/microphone_access.js"  ]
 }

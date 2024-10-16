@@ -1,12 +1,14 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View,Text } from 'react-native'
 
 
 
 export default function Home(){
   
     return (
-      <View>Acceuil</View>
+      <View>
+        <Text>Acceuil</Text>
+        </View>
     )
   
 }

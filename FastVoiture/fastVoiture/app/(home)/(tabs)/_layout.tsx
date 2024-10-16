@@ -19,7 +19,7 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="sevices"
+        name="services"
         options={{
           title: "Services",
           tabBarIcon: () => <FontAwesomeIcon icon={faTaxi} />,

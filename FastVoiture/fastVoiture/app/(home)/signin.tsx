@@ -19,11 +19,6 @@ interface FormValues {
   password: string;
 }
 
-const user = {
-  username: "Blondine",
-  password: "pass123",
-};
-const { setUser } = useUser();
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Le username est requis"),
@@ -41,14 +36,22 @@ const MyForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const user = {
+    username: "Blondine",
+    password: "pass123",
+  };
+  const { setUser } = useUser();
+  
+
   const onSubmit = (data: FormValues) => {
     try {
       if (data.username == user.username) {
+        console.log(data);
         if (data.password == user.password) {
           const name = data.username;
           const password = data.password;
-          setUser({ name, password });
-          router.push("/(home)/(tabs)");
+          setUser({ name, password }); 
+          router.push("/(tabs)/acceuil")
         }
       } else {
         Alert.alert("Error", "Wrong password or username");
@@ -106,8 +109,8 @@ const MyForm = () => {
         )}
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.text} onPress={handleSubmit(onSubmit)}>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+            <Text style={styles.text} >
               Se connecter
             </Text>
           </TouchableOpacity>
@@ -124,7 +127,8 @@ const MyForm = () => {
           >
             <FontAwesomeIcon icon={faCamera} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.camera_icon}>
+          <TouchableOpacity style={styles.camera_icon} 
+            onPress={()=> router.push("/microphone_access")}>
             <FontAwesomeIcon icon={faMicrophone} />
           </TouchableOpacity>
         </View>
