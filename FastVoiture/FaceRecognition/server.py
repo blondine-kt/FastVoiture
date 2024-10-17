@@ -1,25 +1,3 @@
-""""
-from flask import Flask, request, jsonify
-from function import saved,login
-
-app = Flask(__name__)
-
-
-@app.route('/register', methods=['POST'])
-def saved_face(names,url):
-    saved(names,url)
-    print(f"le nom recu est : {names}")
-    return jsonify({'message': 'Données reçues avec succès'})
-
-@app.route('/login', methods=['POST'])
-def login_face(url):
-    name=login()
-    return jsonify (name),200
-
-if __name__ == '__main__':
-    app.run(debug=True)
-"""
-
 from fastapi import FastAPI,Depends
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,6 +6,7 @@ from sqlmodel import SQLModel,Field,create_engine,Session
 from typing import Annotated
 from.securite import password_hash,password_verify
 from.models import Driver,Con,Drivers
+from function import saved,login
 app=FastAPI()
 app.add_middleware ( CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -96,6 +75,21 @@ async def connexion(user:Con, session:SessionDep):
 
        else:
             return{"message":"personne inexistante"}
-           
+       
+@app.post("/saved_face")
+async def saved_face(names,url):
+    saved(names,url)
+    print(f"le nom recu est : {names}")
+    return {'message': 'Données reçues avec succès'}
+
+@app.post("/login_face")
+async def saved_face(url):
+    name=login(url)
+    print(f"le client se nomme  : {name}")
+    return {'message': 'Votre capture est entrain en plein traitrement'}
+
+
+
+
 if __name__=="__name__":
     uvicorn.run(app,host="0.0.0.0", port=8022, workers=1)
