@@ -76,12 +76,14 @@ async def connexion(user:Con, session:SessionDep):
        else:
             return{"message":"personne inexistante"}
        
+# cette fonction enregistre un visage dans la db       
 @app.post("/saved_face")
 async def saved_face(names,url):
     saved(names,url)
     print(f"le nom recu est : {names}")
     return {'message': 'Données reçues avec succès'}
 
+#cette fonction permet de faire la reconaissance faciale
 @app.post("/login_face")
 async def saved_face(url):
     name=login(url)
