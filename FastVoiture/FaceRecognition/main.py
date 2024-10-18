@@ -52,7 +52,6 @@ async def Register (user:Driver,session:SessionDep):
         if user_verify(new_user.userName,session):
              response={"message":"nom d'utiliateur deja existant "}
         else:
-             
             session.add(new_user)
             session.commit()
             session.refresh(new_user)

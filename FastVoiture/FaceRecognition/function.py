@@ -7,6 +7,24 @@ import cv2
 import numpy as np
 import dlib
 from skimage.feature import graycomatrix, graycoprops
+import requests
+from flask import request
+from io import BytesIO
+from PIL import Image
+
+def getImages(adresse):
+    image_url=request.args.get(adresse)
+    if not image_url:
+        return "URL d'image manquante"
+    try:
+        response=requests.get(image_url)
+        if response.status_code!=200:
+            return "impossible de telecharger l'image",400
+        img=Image.Open(BytesIO(response.content))
+        return img
+    except Exception as e:
+        return str(e),500
+    
 
 def glcm(image_path):
     data = cv2.imread(image_path, 0)
@@ -19,24 +37,15 @@ def glcm(image_path):
     homo = graycoprops(co_matrix, 'homogeneity')[0, 0]
     return [dissimilarity, cont, corr, ener, asm, homo]
 
+
 # Chargement du détecteur de visages
 detector = dlib.get_frontal_face_detector()
-
-
-cam=cv2.VideoCapture(0)
-
-
-FrameWidth=50
-Frameheigth=70
-cam.set(3,FrameWidth)
-cam.set(4,Frameheigth)
-
 
 def namePercentage(elements):
     # Vérifie si la liste est vide
     if not elements:
         return None
-    # Trouve l'élément avec le pourcentage le plus élevé
+    # Trouve l'élément avec la distances la plus faible
     highest_element = min(elements, key=lambda item: item[1])
     return highest_element[0]
 
@@ -79,23 +88,18 @@ def img_test(root_folder):
     print('Successfully stored!')
 
 
+
+# fonction qui permet de m'enregistrer grace au lien de l'image 
 def saved(names,url):
-    while cam.isOpened:
-        success,frame=cam.read()
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
-          # Détecter les visages
-        faces = detector(gray)
-        if len(faces) > 0:
-            cv2.imshow('Reconnaissance faciale',frame)
-            cv2.imwrite(f'./images/{names}.jpg', frame)
-            print("Image enregistrée.")
-            break
-    cam.release()
-    cv2.destroyAllWindows()
-    face_image = extract_face(f'./images/{names}.jpg')
-    if face_image is not None:
-        cv2.imwrite(f'./image_traiter/{names}.jpg', face_image)
-    process_datasets(f'./image_traiter/')
+    try:
+        frame=getImages(url)
+        cv2.imwrite(f'./images/{names}.jpg',frame)
+        face_image = extract_face(f'./images/{names}.jpg')
+        if face_image is not None:
+            cv2.imwrite(f'./image_traiter/{names}.jpg', face_image)
+        process_datasets(f'./image_traiter/')
+    except Exception as e:
+        return f"l'erreur est : {e}"
 
 
 
@@ -103,55 +107,46 @@ def login(url):
     name_User='unknow'
     # Load signatures
     elements = []
-    original_signature = np.load('signatures.npy')
-    while cam.isOpened:
-        success,frame=cam.read()
-        frame_preprocess=preprocess_image(frame)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
-          # Détecter les visages
-        faces = detector(gray)
-        
-        if len(faces) > 0:
-            cv2.imshow('Reconnaissance faciale',frame)
-            cv2.imwrite('./test/test.jpg', frame)
-            face_extract=extract_face('./test/test.jpg')
-            if face_extract is not None:
-                cv2.imwrite('./test_traiter/test.jpg', face_extract)
-                break
-            print("Image capturée et enregistrée.")
-            break
-    cam.release()
-    cv2.destroyAllWindows()
-    #create signatures for image test
-    test_folder='test_traiter/' 
-    image_path = os.path.join(test_folder)
-    img_test(image_path)
-    test_signature=np.load('test.npy')
-    print(f'ori_table:{original_signature}')
-    print(f'ori:{len(original_signature)}')
-    print(f'test:{len(test_signature)}')
-     # Charger les images  
-    for i in range (len(original_signature)):
-        image2=original_signature[i-1,:-1].astype(np.float32)
-        names = original_signature[i-1,-1]
-        print(names) 
-        for y in range (len(test_signature)):
-            image1= test_signature[y-1,:-1].astype(np.float32)
-            distances=euclidean(image2,image1)
-            print(f'la distance est de : {distances}')
-            if distances is not None :
-                # Afficher le nom si la similarité est au-dessus d'un seuil
-                name = names.replace('.jpg', '')
-                print("Nom:", name)  # Assurez-vous que 'names' est défini
-                if distances<=80:
-                    elements.append((name, distances))
-                    name_User=namePercentage(elements)
-                else :
-                    pass
-    if name_User:
-        return name_User
-    else:
-        pass
+    try:
+        original_signature = np.load('signatures.npy')
+        frame=getImages(url)
+        cv2.imwrite('./test/test.jpg', frame)
+        face_extract=extract_face('./test/test.jpg')
+        if face_extract is not None:
+            cv2.imwrite('./test_traiter/test.jpg', face_extract)
+        print("Image capturée et enregistrée.")
+        #create signatures for image test
+        test_folder='test_traiter/' 
+        image_path = os.path.join(test_folder)
+        img_test(image_path)
+        test_signature=np.load('test.npy')
+        print(f'ori_table:{original_signature}')
+        print(f'ori:{len(original_signature)}')
+        print(f'test:{len(test_signature)}')
+        # Charger les images  
+        for i in range (len(original_signature)):
+            image2=original_signature[i-1,:-1].astype(np.float32)
+            names = original_signature[i-1,-1]
+            print(names) 
+            for y in range (len(test_signature)):
+                image1= test_signature[y-1,:-1].astype(np.float32)
+                distances=euclidean(image2,image1)
+                print(f'la distance est de : {distances}')
+                if distances is not None :
+                    # Afficher le nom si la similarité est au-dessus d'un seuil
+                    name = names.replace('.jpg', '')
+                    print("Nom:", name)  # Assurez-vous que 'names' est défini
+                    if distances<=80:
+                        elements.append((name, distances))
+                        name_User=namePercentage(elements)
+                    else :
+                        pass
+        if name_User:
+            return name_User
+        else:
+            pass
+    except Exception as e:
+        return f'lerreur est : {e}'
     
 
 def euclidean(v1, v2):
@@ -160,20 +155,13 @@ def euclidean(v1, v2):
     dist = np.sqrt(np.sum(v1-v2)**2)
     return dist
 
-def preprocess_image(frame):
-    # Redimensionner l'image et normaliser
-    resized = cv2.resize(frame, (100, 100))
-    normalized = cv2.normalize(resized, None, 0, 255, cv2.NORM_MINMAX)
-    return normalized
 
 def extract_face(image_path):
     # Lire l'image
     image = cv2.imread(image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
     # Détecter les visages
     faces = detector(gray)
-
     if len(faces) > 0:
         # Prenez le premier visage détecté
         face = faces[0]
