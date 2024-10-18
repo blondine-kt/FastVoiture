@@ -1,7 +1,4 @@
 import cv2
-import pygame
-pygame.init()
-pygame.mixer.init()
 import os
 import cv2
 import numpy as np
@@ -12,20 +9,25 @@ from flask import request
 from io import BytesIO
 from PIL import Image
 
+#converti une image PIl en cv2
+def pil_to_cv2(pil_image):
+    return cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+
+#recupere une image a partir d'un url web
 def getImages(adresse):
-    image_url=request.args.get(adresse)
-    if not image_url:
-        return "URL d'image manquante"
+    print(adresse)
     try:
-        response=requests.get(image_url)
+        response=requests.get(adresse)
         if response.status_code!=200:
+            print('imposiible de telecharger')
             return "impossible de telecharger l'image",400
-        img=Image.Open(BytesIO(response.content))
+        picture=Image.open(BytesIO(response.content))
+        img=pil_to_cv2(picture)
         return img
     except Exception as e:
         return str(e),500
     
-
+#descripteur glcm
 def glcm(image_path):
     data = cv2.imread(image_path, 0)
     co_matrix = graycomatrix(data, [1], [np.pi/4], None,symmetric=True, normed=True )
@@ -41,6 +43,7 @@ def glcm(image_path):
 # Chargement du détecteur de visages
 detector = dlib.get_frontal_face_detector()
 
+#recupere et donne la distance la plus proche
 def namePercentage(elements):
     # Vérifie si la liste est vide
     if not elements:
@@ -50,7 +53,7 @@ def namePercentage(elements):
     return highest_element[0]
 
 
-
+#creer la signature original
 def process_datasets(root_folder):
     all_features = [] # List to store all features and metadatas
     for root, dirs, files in os.walk(root_folder):
@@ -69,6 +72,7 @@ def process_datasets(root_folder):
     np.save('signatures.npy', signatures)
     print('Successfully stored!')
 
+#creer une signature de test
 def img_test(root_folder):
     all_features = [] # List to store all features and metadatas
     for root, dirs, files in os.walk(root_folder):
@@ -93,16 +97,19 @@ def img_test(root_folder):
 def saved(names,url):
     try:
         frame=getImages(url)
+        print(frame)
         cv2.imwrite(f'./images/{names}.jpg',frame)
+        print('milieu')
         face_image = extract_face(f'./images/{names}.jpg')
         if face_image is not None:
+            print('erreur decoupage')
             cv2.imwrite(f'./image_traiter/{names}.jpg', face_image)
         process_datasets(f'./image_traiter/')
     except Exception as e:
         return f"l'erreur est : {e}"
 
 
-
+#verifie la correspondance des images
 def login(url):
     name_User='unknow'
     # Load signatures
@@ -155,7 +162,7 @@ def euclidean(v1, v2):
     dist = np.sqrt(np.sum(v1-v2)**2)
     return dist
 
-
+#recupere les donnees du visages et decoupe la photo pour ne garder que le visage
 def extract_face(image_path):
     # Lire l'image
     image = cv2.imread(image_path)
