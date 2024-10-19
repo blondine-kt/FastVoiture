@@ -40,16 +40,16 @@ export default function MicrophoneAccess() {
     const uri = recording.getURI();
     console.log("Recording stopped and stored at", uri);
   }
-  async function playSound() {
-    console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync(
-      require(recording.getURI())
-    );
-    setSound(sound);
+  // async function playSound() {
+  //   console.log("Loading Sound");
+  //   const { sound } = await Audio.Sound.createAsync(
+  //     require(recording.getURI)
+  //   );
+  //   setSound(sound);
 
-    console.log("Playing Sound");
-    await sound.playAsync();
-  }
+  //   console.log("Playing Sound");
+  //   await sound.playAsync();
+  // }
 
   useEffect(() => {
     return sound
