@@ -3,7 +3,7 @@ import { View, StyleSheet, Button } from "react-native";
 import { Audio } from "expo-av";
 import React from "react";
 
-export default function App() {
+export default function MicrophoneAccess() {
   const [recording, setRecording] = useState();
   const [permissionResponse, requestPermission] = Audio.usePermissions();
   const [sound, setSound] = useState();
