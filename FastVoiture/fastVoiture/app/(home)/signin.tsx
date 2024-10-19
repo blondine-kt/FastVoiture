@@ -4,9 +4,10 @@ import { Button, TextInput, Text } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios, { AxiosError } from 'axios'
 
 
-import { Link, router, useRouter } from "expo-router";
+import { Link, Redirect, router, useRouter } from "expo-router";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons/faCamera";
@@ -37,33 +38,40 @@ const MyForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const user = {
-    username: "Blondine",
-    password: "pass123",
-  };
+  
   const { setUser } = useUser();
   
 
-  const onSubmit = (data: FormValues) => {
-    try {
-      if (data.username == user.username) {
-        console.log(data);
-        if (data.password == user.password) {
-          const name = data.username;
-          const password = data.password;
-          setUser({ name, password }); 
-          router.push("/(tabs)/acceuil")
+  const onSubmit = async(data: FormValues) => {
+    if(data != null){
+      try{
+         
+        const response = await axios.post("http://192.168.2.11:8000/Login/",{ 
+          'userName': data.username,
+          'password': data.password,
+        });
+        if(response.status == 200){
+          const result = await response;
+          console.log(result);
+          //Alert.alert("Form Submitted", JSON.stringify(result));
+          const user ={
+            'name': data.username,
+            'password':data.password,
+          }
+          setUser(user)
+          router.push('/(home)/(tabs)/acceuil')
         }
-      } else {
-        Alert.alert("Error", "Wrong password or username");
+       
+
+      }catch (error) {
+        const axiosError = error as AxiosError; 
+
+        if (axiosError.response) {
+          console.error("Error data:", axiosError.response.data);
+        } else {
+          console.error("Error:", axiosError);
+        }
       }
-      // console.log(data);
-      // Alert.alert(
-      //   "Form Submitted",
-      //   `UserName: ${data.username}\nPassword: ${data.password}`
-      // );
-    } catch (error) {
-      console.log(error);
     }
   };
 

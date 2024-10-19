@@ -24,6 +24,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.0.2",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "expo": "^51.0.37",
     "expo-av": "~14.0.7",

@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const MyForm = () => {
   //using fetch to connect with fast server
-  const fetch = require("expo-fetch");
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Nom d'utilisateur est requis"),
@@ -37,31 +37,40 @@ const MyForm = () => {
 
   const handleSubmit = async (values) => {
     const formData = { ...values };
-    const data = {
-      username: formData.username,
-      nom: formData.name + " " + formData.surname,
-      email: formData.email,
-      phone: formData.phone,
-      license_plate: formData.license_plate,
-      driver_license: formData.driver_license,
+    const Driver = {
+      'userName': formData.username,
+      'nom': formData.name + " " + formData.surname,
+      'password': formData.password,
+      'email': formData.email,
+      'phone': formData.phone,
+      'license_plate': formData.license_plate,
+      'driver_license': formData.driver_license,
     };
-    if (data != null) {
+    if (Driver != null) {
       try {
-        const response = await fetch("http:// 192.168.2.11:8022/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+      
+        const response = await axios.post("http://192.168.2.11:8000/",{ 
+          'userName': formData.username,
+          'nom': formData.name + " " + formData.surname,
+          'password': formData.password,
+          'email': formData.email,
+          'phone': formData.phone,
+          'license_plate': formData.license_plate,
+          'driver_license': formData.driver_license,
         });
+
         if (!response.ok) {
           throw new Error(`Response not ok! status: ${response.status}`);
         }
         const result = await response.json();
         console.log(result);
-        Alert.alert("Form Submitted", result);
+        Alert.alert("Form Submitted", JSON.stringify(result));
       } catch (error) {
-        console.error("Error:", error);
+        if (error.response) {
+          console.error("Error data:", error.response.data);
+        } else {
+          console.error("Error:", error);
+        }
       }
     } else {
       Alert.alert("Vous devez entrer vos informations");
