@@ -1,12 +1,14 @@
 
 import React from 'react'
 import { View,Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { useRouter } from 'expo-router';
 
 import {useUser} from '../../userauth';
 
 
 export default function ProfileScreen() {
     const user = useUser()
+    const router = useRouter()
   
     return (
      <View style={styles.container}>
@@ -17,7 +19,8 @@ export default function ProfileScreen() {
      </View>}
      <View style={styles.wrapper}>
      <View style={styles.items}>
-     <TouchableOpacity style={styles.item}>
+     <TouchableOpacity style={styles.item} onPress={
+        () => router.push('/securitysecurity-page')}>
         <Text style={styles.itemText}>
             Sécurité
         </Text>

@@ -136,7 +136,8 @@ const MyForm = () => {
           >
             <FontAwesomeIcon icon={faCamera} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.camera_icon}>
+          <TouchableOpacity style={styles.camera_icon} 
+          onPress={()=> router.push("/microphone_access")}>
            
             <FontAwesomeIcon icon={faMicrophone} />
           </TouchableOpacity>
