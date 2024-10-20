@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { View, Text, TouchableOpacity, Modal, Image } from "react-native";
-import { Camera,CameraType,CameraView, CameraCapturedPicture } from "expo-camera";
+import { CameraView } from "expo-camera";
 
 
 

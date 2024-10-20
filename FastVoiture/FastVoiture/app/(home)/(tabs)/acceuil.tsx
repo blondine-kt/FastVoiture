@@ -14,8 +14,8 @@ export default function Home(){
       <View style={styles.container}>
        { /* View containing user name */ } 
         {user &&
-        <View style={styles.header}> 
-        <Text>Acceuil {user.user?.name}</Text>
+        <View > 
+        <Text style={styles.header}> Bienvenue  {user.user?.name}</Text>
         </View>
         }
         <View style={styles.wrapper}>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create(
   {
     container:{
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#E8EAED',
       
 
     } ,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create(
 
     },
     wrapper:{
-      paddingTop: 80,
+      paddingTop: 50,
       paddingHorizontal: 20,
       
       
@@ -83,6 +83,7 @@ const styles = StyleSheet.create(
     item: {
       backgroundColor: '#FFF',
       padding: 15,
+      borderWidth:2,
       borderRadius: 10,
       flexDirection: 'row',
       alignItems: 'center',

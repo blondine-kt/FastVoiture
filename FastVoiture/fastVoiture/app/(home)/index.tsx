@@ -10,13 +10,7 @@ export default function HomeScreen() {
 
   const router = useRouter();
 
-  // const scrollToIndex = (index) => {
-  //   Animated.timing(scrollX, {
-  //     toValue: index * 200, 
-  //     duration: 300,
-  //     useNativeDriver: true,
-  //   }).start();
-  // };
+  
   return (
     <View style={styles.container}>
        <Animated.ScrollView

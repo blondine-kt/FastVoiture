@@ -7,6 +7,7 @@ export default function RootLayout() {
     <UserProvider>
     <Stack>
       <Stack.Screen name="(home)" options={{ headerShown: false }}/>
+      <Stack.Screen name = "security" options={{ headerShown: false }}/>
     </Stack>
     </UserProvider>
   );
