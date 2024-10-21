@@ -20,7 +20,7 @@ export default function ProfileScreen() {
      <View style={styles.wrapper}>
      <View style={styles.items}>
      <TouchableOpacity style={styles.item} onPress={
-        () => router.push('/securitysecurity-page')}>
+        () => router.push('/security/security-page')}>
         <Text style={styles.itemText}>
             Sécurité
         </Text>

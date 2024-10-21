@@ -3,15 +3,11 @@ import { View, Button, Alert } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 
-import {useUser} from '../userauth';
+
 
 const RecordAudio: React.FC = () => {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
-  const [username, setusername] = useState<string>('')
 
-  const user = useUser()
-
-  
 
   const startRecording = async () => {
     try {
@@ -33,44 +29,36 @@ const RecordAudio: React.FC = () => {
   const stopRecording = async () => {
     if (recording) {
       await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
+      const uri = recording.getURI(); // The URI of the recorded audio
       setRecording(null);
       if (uri != null){
-        await uploadAudio(uri);
+        await uploadAndCompareVoice(uri);
       }
       
     }
   };
 
-  const uploadAudio = async (uri: string) => {
-    const apiUrl = 'http://192.168.2.11:5000/enregistrer_voix'; 
+  const uploadAndCompareVoice = async (uri: string) => {
+    const apiUrl = 'http://192.168.2.11:5000/se_connecter'; 
     const formData = new FormData();
-    
-   
-    
-    
-    // Use FileSystem to read the file as a blob
-    const response = await FileSystem.readAsStringAsync(uri, {
+
+     // Use FileSystem to read the file as a blob
+     const response = await FileSystem.readAsStringAsync(uri, {
       encoding: FileSystem.EncodingType.Base64,
     });
      
     const base64Blob = `data:audio/wav;base64,${response}`;
   
-    // Appends the blob to the FormData
-    formData.append('file', {
-      uri,
-      name: 'voice_recording.wav', 
-      type: 'audio/wav', 
-    } as unknown as Blob);
-
-    if(user.user != null){
-      setusername(user.user.name)
-      formData.append('username',username );
-    }
-    
+  
+   // Appends the blob to the FormData
+   formData.append('file', {
+    uri,
+    name: 'voice_recording.wav', 
+    type: 'audio/wav', 
+  } as unknown as Blob);
   
     try {
-      const uploadResponse = await fetch(apiUrl, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         body: formData,
         headers: {
@@ -78,13 +66,16 @@ const RecordAudio: React.FC = () => {
         },
       });
   
-      const result = await uploadResponse.json();
-      Alert.alert('Upload success', JSON.stringify(result));
+      const result = await response.json();
+      if (result.match) {
+        Alert.alert('Match found!', `Username: ${result.username}`);
+      } else {
+        Alert.alert('No match found.');
+      }
     } catch (error) {
       console.error('Upload failed:', error);
     }
   };
-
    
 
   return (

@@ -18,18 +18,20 @@ export default function ProfileScreen() {
      </View>}
      <View style={styles.wrapper}>
      <View style={styles.items}>
-     <TouchableOpacity style={styles.item} >
+     <TouchableOpacity style={styles.item} onPress={
+        () => router.push('/security/modify-password')
+     }>
         <Text style={styles.itemText}>
         Modifier Mot de Passe
         </Text>
      </TouchableOpacity>
      <TouchableOpacity style={styles.item} onPress={
-        () => router.push('/security\register-image')}>
+        () => router.push('/security/register-image')}>
         <Text style={styles.itemText}>
             Reconnaissance Faciale
         </Text>
      </TouchableOpacity>
-     <TouchableOpacity style={styles.item}>
+     <TouchableOpacity style={styles.item} onPress={()=> router.push('/security/register-voice')}>
         <Text style={styles.itemText}>
            Reconnaissance Vocale 
         </Text>

@@ -2,6 +2,7 @@ import React from 'react'
 import { View,Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import {useUser} from '../../userauth';
+import { router } from 'expo-router';
 
 
 // user home portal
@@ -20,12 +21,13 @@ export default function Home(){
         }
         <View style={styles.wrapper}>
           <View style={styles.items}>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} >
               <Text style={styles.itemText}>
                 Commençez à gagner
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} 
+             onPress={() => router.push('/security/security-page')}>
             <Text style={styles.itemText}>
                Renforçer la sécurité
              </Text>
