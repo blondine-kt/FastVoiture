@@ -46,7 +46,7 @@ const MyForm = () => {
     if(data != null){
       try{
          
-        const response = await axios.post("http://192.168.2.11:8000/Login/",{ 
+        const response = await axios.post("http://10.1.10.193:8040/Login/",{ 
           'userName': data.username,
           'password': data.password,
         });
