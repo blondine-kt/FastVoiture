@@ -8,6 +8,7 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="(home)" options={{ headerShown: false }}/>
       <Stack.Screen name = "security" options={{ headerShown: false }}/>
+      <Stack.Screen name ="(locs)" options={{ headerShown: false }}/>
     </Stack>
     </UserProvider>
   );

@@ -13,25 +13,39 @@
       "backgroundColor": "#e8ebec"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.fastVoiture",
+      "config": {
+      "googleMapsApiKey": "AIzaSyB32JtR5NW-OyWRQwWWYQZd4TccrUdSfnU"
+     }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/fvsmall_icon.png",
         "backgroundColor": "#46c2c2"
-      }
+      },
+      "package": "com.example.fastVoiture",
+      "config": {
+              "googleMaps": {
+               "apiKey": "AIzaSyDgb6QTFtWqjlE6kMpIkKysHskxlUfT9wM"
+               }
+           }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/fvsmall_icon.png"
     },
     "plugins": [
       "expo-router"
-      
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c87c8b3e-5d1c-43e5-8303-9957aad1decc"
+      }
     }
   }
 }
